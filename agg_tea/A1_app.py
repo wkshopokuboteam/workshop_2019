@@ -33,20 +33,20 @@ def judge(file):
     return cat
 
 
-# データベースの選択回数を更新するメソッド
+# データベースの売上個数を更新するメソッド
 def countup(tea, shop):
     # データベースに接続する
     conn = sqlite3.connect('database/example.db')
     c = conn.cursor()
     
-    # 更新前の回数を取得する
+    # 更新前の売上個数を取得する
     c.execute("SELECT count FROM teas WHERE tea = ? AND shop = ?", (tea, shop) )
     
-    # 回数をインクリメントする
+    # 売上個数をインクリメントする
     for row in c:
         updatecount = row[0] + 1
     
-    # インクリメント後の回数に更新する
+    # インクリメント後の売上個数に更新する
     c.execute("UPDATE teas SET count = ? WHERE tea = ? AND shop = ?", (updatecount, tea, shop))
     
     # 更新結果を保存（コミット）する
@@ -56,6 +56,41 @@ def countup(tea, shop):
     conn.close()
 
 
+# 各緑茶、店舗の売上個数を取得するメソッド
+def select_sold_count(tea, shop):
+    # データベースに接続する
+    conn = sqlite3.connect('database/example.db')
+    c = conn.cursor()
+
+    # 売上個数を取得する
+    c.execute("SELECT count FROM teas WHERE tea = ? AND shop = ?", (tea, shop))
+    for row in c:
+        sold_count = row[0]
+
+    return sold_count
+
+# 各緑茶、店舗の売上個数を表示するメソッド
+def display_sold_count():
+    grid_result11.SetLabel(str(select_sold_count("綾鷹", "A店")))
+    grid_result12.SetLabel(str(select_sold_count("綾鷹", "B店")))
+    grid_result13.SetLabel(str(select_sold_count("綾鷹", "C店")))
+    grid_result21.SetLabel(str(select_sold_count("おおいお茶", "A店")))
+    grid_result22.SetLabel(str(select_sold_count("おおいお茶", "B店")))
+    grid_result23.SetLabel(str(select_sold_count("おおいお茶", "C店")))
+    grid_result31.SetLabel(str(select_sold_count("おおいお茶濃い茶", "A店")))
+    grid_result32.SetLabel(str(select_sold_count("おおいお茶濃い茶", "B店")))
+    grid_result33.SetLabel(str(select_sold_count("おおいお茶濃い茶", "C店")))
+    grid_result41.SetLabel(str(select_sold_count("伊右衛門", "A店")))
+    grid_result42.SetLabel(str(select_sold_count("伊右衛門", "B店")))
+    grid_result43.SetLabel(str(select_sold_count("伊右衛門", "C店")))
+    grid_result51.SetLabel(str(select_sold_count("生茶", "A店")))
+    grid_result52.SetLabel(str(select_sold_count("生茶", "B店")))
+    grid_result53.SetLabel(str(select_sold_count("生茶", "C店")))
+    grid_result61.SetLabel(str(select_sold_count("天然水GREENTEA", "A店")))
+    grid_result62.SetLabel(str(select_sold_count("天然水GREENTEA", "B店")))
+    grid_result63.SetLabel(str(select_sold_count("天然水GREENTEA", "C店")))
+
+# 振り分けボタン押下時の処理
 def click_button_1(event):
 
     shops = ["A店", "B店", "C店"]
@@ -69,11 +104,12 @@ def click_button_1(event):
             shutil.move(f, todir)
             countup(tea, shop)
 
-    text_result.SetLabel('振り分け処理が完了しました。')
+    text_result.SetLabel('振り分け処理が完了しました。下記が集計結果です。')
+    display_sold_count()
 
 
 app = wx.App()
-frame = wx.Frame(None, -1, 'タイトル', size=(1000, 200), style=wx.DEFAULT_FRAME_STYLE)
+frame = wx.Frame(None, -1, 'タイトル', size=(1000, 300), style=wx.DEFAULT_FRAME_STYLE)
 
 # パネル
 p = wx.Panel(frame, wx.ID_ANY)
@@ -121,33 +157,33 @@ grid_result63 = wx.StaticText(p, wx.ID_ANY, '')
 
 layout2 = wx.GridSizer(rows=7, cols=4, gap=(0, 0))
 layout2.Add(grid_result00)
-layout2.Add(grid_result01)
-layout2.Add(grid_result02)
-layout2.Add(grid_result03)
+layout2.Add(grid_result01, flag=wx.ALIGN_RIGHT)
+layout2.Add(grid_result02, flag=wx.ALIGN_RIGHT)
+layout2.Add(grid_result03, flag=wx.ALIGN_RIGHT)
 layout2.Add(grid_result10)
-layout2.Add(grid_result11)
-layout2.Add(grid_result12)
-layout2.Add(grid_result13)
+layout2.Add(grid_result11, flag=wx.ALIGN_RIGHT)
+layout2.Add(grid_result12, flag=wx.ALIGN_RIGHT)
+layout2.Add(grid_result13, flag=wx.ALIGN_RIGHT)
 layout2.Add(grid_result20)
-layout2.Add(grid_result21)
-layout2.Add(grid_result22)
-layout2.Add(grid_result23)
+layout2.Add(grid_result21, flag=wx.ALIGN_RIGHT)
+layout2.Add(grid_result22, flag=wx.ALIGN_RIGHT)
+layout2.Add(grid_result23, flag=wx.ALIGN_RIGHT)
 layout2.Add(grid_result30)
-layout2.Add(grid_result31)
-layout2.Add(grid_result32)
-layout2.Add(grid_result33)
+layout2.Add(grid_result31, flag=wx.ALIGN_RIGHT)
+layout2.Add(grid_result32, flag=wx.ALIGN_RIGHT)
+layout2.Add(grid_result33, flag=wx.ALIGN_RIGHT)
 layout2.Add(grid_result40)
-layout2.Add(grid_result41)
-layout2.Add(grid_result42)
-layout2.Add(grid_result43)
+layout2.Add(grid_result41, flag=wx.ALIGN_RIGHT)
+layout2.Add(grid_result42, flag=wx.ALIGN_RIGHT)
+layout2.Add(grid_result43, flag=wx.ALIGN_RIGHT)
 layout2.Add(grid_result50)
-layout2.Add(grid_result51)
-layout2.Add(grid_result52)
-layout2.Add(grid_result53)
+layout2.Add(grid_result51, flag=wx.ALIGN_RIGHT)
+layout2.Add(grid_result52, flag=wx.ALIGN_RIGHT)
+layout2.Add(grid_result53, flag=wx.ALIGN_RIGHT)
 layout2.Add(grid_result60)
-layout2.Add(grid_result61)
-layout2.Add(grid_result62)
-layout2.Add(grid_result63)
+layout2.Add(grid_result61, flag=wx.ALIGN_RIGHT)
+layout2.Add(grid_result62, flag=wx.ALIGN_RIGHT)
+layout2.Add(grid_result63, flag=wx.ALIGN_RIGHT)
 
 layout.Add(layout2)
 
