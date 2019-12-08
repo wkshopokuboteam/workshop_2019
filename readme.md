@@ -34,3 +34,20 @@
 - 「振り分け」ボタンを押下する
 - 「inputdata」の画像が緑茶の種類により「outputdata」に振り分けられる
 - 合わせて緑茶の種類と店舗毎の集計結果（累計）が表示される
+
+# 開発環境の構築方法
+## ①pycharmでProjectをオープンする
+## ②環境変数を追加する
+terminalから下記を実行すること  
+`set PIPENV_VENV_IN_PROJECT=1`  
+`set PIPENV_IGNORE_VIRTUALENVS=1`
+
+## ③仮想実行環境を構築
+ternalから `pipenv install`を実行する  
+プロジェクト直下に `.venv`が構築されていることを確認する。
+
+## ④インタプリタを仮想実行環境に変更する
+左上のFile→Settings→Project Interpreterにてインタプリタを `~/.venv/Scripts/Python.exe`に変更する
+
+## ⑤構築はこれで完了
+アプリを起動する場合にはterminalで `pipenv run start`を実行すれば起動する。
