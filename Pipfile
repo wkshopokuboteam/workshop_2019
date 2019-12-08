@@ -11,6 +11,10 @@ numpy = "*"
 keras = "*"
 wxpython = "*"
 matplotlib = "*"
+tensorflow = "*"
 
 [requires]
 python_version = "3.6"
+
+[scripts]
+start = 'python ./select_tea/A1_app.py'
