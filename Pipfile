@@ -11,10 +11,12 @@ numpy = "*"
 keras = "*"
 wxpython = "*"
 matplotlib = "*"
-tensorflow = "*"
+tensorflow = "==2.0.*"
+pygments = "*"
+pypiwin32 = "*"
+pyyaml = "*"
 
 [requires]
 python_version = "3.6"
 
 [scripts]
-start = 'python ./select_tea/A1_app.py'

@@ -1,0 +1,18 @@
+db:
+  path : C:\temp\
+  fileName: elearning.db
+
+result:
+  path: C:\temp\
+  fit: study_result_fit
+  const: study_result_cost
+  model: car_predict.json
+  weight: car_predict.hdf5
+
+train_data:
+  path: C:\okubo\workshop_2019\select_car\testdata\
+
+resource:
+  path: C:\okubo\workshop_2019\select_car\resource\
+  logo: logo.png
+  progress: progress.gif
