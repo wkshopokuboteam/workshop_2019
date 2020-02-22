@@ -22,6 +22,10 @@ class FileDropTarget(wx.FileDropTarget):
         wx.FileDropTarget.__init__(self)
         self.window = window
         self.db = window.db
+        with open(os.path.dirname(os.path.abspath(__file__)) + os.sep + default_yaml_filename, "r",
+                  encoding="utf-8") as f:
+            y = yaml.load(stream=f, Loader=yaml.SafeLoader)
+            self.result = y.get("result")
 
     def OnDropFiles(self, x, y, files):
         self.window.text_entry.SetLabel(files[0])
@@ -35,9 +39,9 @@ class FileDropTarget(wx.FileDropTarget):
     # 学習結果に基づいて入力された画像を判定するメソッド
     def judge(self, file):
         # 保存したモデルの読み込み
-        model = model_from_json(open('learningresult/car_predict.json').read())
+        model = model_from_json(open(self.result.get("path") + self.result.get("model")).read())
         # 保存した重みの読み込み
-        model.load_weights('learningresult/car_predict.hdf5')
+        model.load_weights(self.result.get("path") + self.result.get("weight"))
 
         # 画像を読み込む
         img_path = str(file)
@@ -138,14 +142,14 @@ class App(wx.Frame):
         # ドロップ対象の設定
         label.SetDropTarget(FileDropTarget(self))
         # テキスト入力ウィジット
-        text_entry = wx.TextCtrl(p, wx.ID_ANY)
+        self.text_entry = wx.TextCtrl(p, wx.ID_ANY)
         # テキスト入力ウィジット
-        text_result = wx.StaticText(p, wx.ID_ANY, '結果をここに出力', style=wx.SIMPLE_BORDER | wx.TE_CENTER)
+        self.text_result = wx.StaticText(p, wx.ID_ANY, '結果をここに出力', style=wx.SIMPLE_BORDER | wx.TE_CENTER)
         # レイアウト
         layout = wx.BoxSizer(wx.VERTICAL)
         layout.Add(label, flag=wx.EXPAND | wx.ALL, border=10, proportion=1)
-        layout.Add(text_entry, flag=wx.EXPAND | wx.ALL, border=10)
-        layout.Add(text_result, flag=wx.EXPAND | wx.ALL, border=10)
+        layout.Add(self.text_entry, flag=wx.EXPAND | wx.ALL, border=10)
+        layout.Add(self.text_result, flag=wx.EXPAND | wx.ALL, border=10)
         p.SetSizer(layout)
         notebook.InsertPage(0, p, "Application")
 
